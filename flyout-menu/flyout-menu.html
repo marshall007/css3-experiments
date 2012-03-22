@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CSS3 Fly-out Menu Demo</title>
+</head>
+<link rel=stylesheet href="flyout-menu.css" />
+<body>
+	<div id="testfield" class="span16">
+		<div class="flyout-wrap">
+			<a class="flyout-btn" href="#" title="Toggle"><span>Flyout Menu Toggle</span></a>
+			<ul class="flyout flyout-init">
+				<li><a href="#"><span>Item</span></a></li>
+				<li><a href="#"><span>Item</span></a></li>
+				<li><a href="#"><span>Item</span></a></li>
+				<li><a href="#"><span>Item</span></a></li>
+				<li><a href="#"><span>Item</span></a></li>
+				<li><a href="#"><span>Item</span></a></li>
+			</ul><!-- .flyout -->
+
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+			<script>
+				$(".flyout-btn").click(function() {
+					$(".flyout-btn").toggleClass("btn-rotate");
+					$(".flyout").find("a").removeClass();
+					$(".flyout").removeClass("flyout-init fade").toggleClass("expand");
+				});
+				$(".flyout").find("a").click(function() {
+					$(".flyout-btn").toggleClass("btn-rotate");
+					$(".flyout").removeClass("expand").addClass("fade");
+					$(this).addClass("clicked");
+				});
+			</script>
+		</div><!-- .flyout-wrap -->
+	</div><!-- #testfield -->
+</body>
