@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSS3 Typing Animation Demo</title>
+</head>
+
+<style>
+  @-webkit-keyframes blink-before {
+    from, to { color: transparent }
+    50% { color: inherit }
+  }
+
+  @-webkit-keyframes blink-after {
+    from, to { color: transparent }
+    50% { color: inherit }
+  }
+
+  @-webkit-keyframes typing {
+    from { width: 100% }
+    to { width: 0 }
+  }
+
+  @-moz-keyframes blink-before {
+    from, to { border-color: transparent }
+    50% { border-color: inherit }
+  }
+
+  @-moz-keyframes blink-after {
+    from, to { border-color: transparent }
+    50% { border-color: inherit }
+  }
+
+  @-moz-keyframes typing {
+    from { width: 100% }
+    to { width: 0 }
+  }
+
+  /* monospace fonts only */
+  body {
+    background-color: rgba(0, 40, 51, 1);
+    color: rgba(130, 148, 150, 1);
+    font-family: Inconsolata, Consolas, Courier, monospace;
+    padding: 3em;
+  }
+
+  h1 {
+    float: left;
+    font-size: 150%;
+    padding-right: .5em;
+    position: relative;
+  }
+
+  h1.caret {
+    color: rgba(181, 137, 0, 1);
+  }
+
+  h1 span {
+    background-color: rgba(0, 40, 51, 1);
+    color: rgba(130, 148, 150, 1);
+    box-sizing: border-box;
+    position: absolute;
+    right:0;
+    top:0;
+    
+    -webkit-animation: blink-before 1.1s step-end 3,
+                       typing 3.2s 2.5s steps(14, end) 1 both, /* # of steps = # of characters */
+                       blink-after 1.1s 6.2s step-end infinite;
+    
+    -moz-animation: blink-before 1.1s step-end 3,
+                    typing 3.2s 2.5s steps(14, end) 1 both, /* # of steps = # of characters */
+                    blink-after 1.1s 6.2s step-end infinite;
+  }​
+</style>
+
+<body>
+  <h1 class="caret">$</h1><h1>sudo rm -rf /<span>&#9608;</span></h1>
+</body>
+</html>
