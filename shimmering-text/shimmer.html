@@ -2,103 +2,101 @@
 <html>
 <head>
 
-	<title>CSS3/JS Shimmer Effect</title>
+  <title>CSS3/JS Shimmer Effect</title>
 
-	<style type="text/css">
-		body {
-			margin: 0 auto;
-			text-align: center;
-		}
+  <style type="text/css">
+    body {
+      margin: 0 auto;
+      text-align: center;
+    }
 
-		#glow {
-			font-family: Helvetica, arial, freesans;
-			font-size: 72px;
+    #glow {
+      font-family: Helvetica, arial, freesans;
+      font-size: 72px;
 
-			width: 600px;
-			padding: 0;
-			margin: 100px auto 10px;
+      width: 600px;
+      padding: 0;
+      margin: 100px auto 10px;
 
-			background-color: #444;
-			-webkit-background-clip: text !important;
-			-webkit-text-fill-color: transparent;
-		}
-	</style>
+      background-color: #444;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
 
 <body>
 
-	<h1 id="glow">Shimmering Text</h1>
-	<h4>(hint: move your mouse. also, webkit only because background-clip.)</h4>
+  <h1 id="glow">Shimmering Text</h1>
+  <h4>(hint: move your mouse. also, webkit only because background-clip.)</h4>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>
 
-		(function(){
+    (function(){
 
-			var strokeWidth = 10;
-			var $glow = $('#glow');
+      var strokeWidth = 10;
+      var $glow = $('#glow');
 
-			var bgcolor = $glow.css('background-color'),
-				ltcolor = Lighten(bgcolor);
+      var bgcolor = $glow.css('background-color'),
+          ltcolor = Lighten(bgcolor);
 
-			console.log(bgcolor, ltcolor);
+      $('html').bind('mousemove',function(e) {
+        var p = (e.pageX / $('body').width())*100;
 
-			$('html').bind('mousemove',function(e) {
-				var p = (e.pageX / $('body').width())*100;
+        var stops = [
+          [(p-strokeWidth) + '%', bgcolor],
+          [(p) + '%', ltcolor],
+          [(p+strokeWidth) + '%', bgcolor]
+        ];
 
-				var stops = [
-					[(p-strokeWidth) + '%', bgcolor],
-					[(p) + '%', ltcolor],
-					[(p+strokeWidth) + '%', bgcolor]
-				];
+        var colorStops = '';
+        for (i=0; i<stops.length; i++) {
+          colorStops += 'color-stop('+ stops[i][0] +','+ stops[i][1] +'),';
+        }
 
-				var colorStops = '';
-				for (i=0; i<stops.length; i++) {
-					colorStops += 'color-stop('+ stops[i][0] +','+ stops[i][1] +'),';
-				}
+        colorStops = colorStops.substring(0, colorStops.length-1); // trim last comma
 
-				colorStops = colorStops.substring(0, colorStops.length-1); // trim last comma
+        $glow.css({
+          background: '-webkit-gradient(linear, left top, right bottom, '+ colorStops +')'
+        });
+      });
+    })();
 
-				$glow.css({
-					background: '-webkit-gradient(linear, left top, right bottom, '+ colorStops +')'
-				});
-			});
-		})();
+    // function adopted from http://stackoverflow.com/a/5834079
+    // needs refactoring, doesn't quite work as expected
+    function Lighten(rgbColor) {
 
-		// function adopted from http://stackoverflow.com/a/5834079
-		// needs refactoring, doesn't quite work as expected
-		function Lighten(rgbColor) {
+      rgbColor = rgbColor.replace(/[^0-9,]+/g, "").split(',');
 
-			rgbColor = rgbColor.replace(/[^0-9,]+/g, "").split(',');
+      var red = rgbColor[0],
+          green = rgbColor[1],
+          blue = rgbColor[2];
 
-			var red = rgbColor[0],
-				green = rgbColor[1],
-				blue = rgbColor[2];
+      var max = ([red,green,blue].sort(function(l,r){return r-l}))[0];
+      var multiplier = max;
+      multiplier = (multiplier / 255) + 1;
 
-		    var max = ([red,green,blue].sort(function(l,r){return r-l}))[0];
-		    var multiplier = max;
-		    multiplier = (multiplier / 255) + 1;
+      // if it would still be too dark, make it lighten more
+      if (multiplier < 1.5) {
+        multiplier = 1.9;
+      }
 
-		    // if it would still be too dark, make it lighten more
-		    if (multiplier < 1.5) {
-		    	multiplier = 1.9;
-		    }
+      // if it gets to white, move away a bit
+      if ((max * multiplier) > 255) {
+        multiplier = (multiplier / 230) + 1;
+      }
 
-		    // if it gets to white, move away a bit
-		    if ((max * multiplier) > 255) {
-		        multiplier = (multiplier / 230) + 1;
-		    }
+      var r = Math.round(red * multiplier);
+      var g = Math.round(green * multiplier);
+      var b = Math.round(blue * multiplier);
 
-		    var r = Math.round(red * multiplier);
-		    var g = Math.round(green * multiplier);
-		    var b = Math.round(blue * multiplier);
+      if (r > 255) { r = 255; }
+      if (g > 255) { g = 255; }
+      if (b > 255) { b = 255; }
 
-		    if (r > 255) { r = 255; }
-		    if (g > 255) { g = 255; }
-		    if (b > 255) { b = 255; }
-
-		    return "rgb(" + r + "," + g + "," + b + ")";
-		}
-		
-	</script>
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    
+  </script>
 </body>
 </html>
